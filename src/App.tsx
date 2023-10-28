@@ -1,37 +1,10 @@
-import {useEffect, useState} from 'react'
-import './App.css'
-import {ApolloClient, InMemoryCache, ApolloProvider, gql} from '@apollo/client';
+import React from "react";
+import {Characters} from "./pages/Home/Characters";
 
-function App() {
-    const [count, setCount] = useState(0)
-
-    useEffect(() => {
-        const client = new ApolloClient({
-            uri: 'https://flyby-router-demo.herokuapp.com/',
-            cache: new InMemoryCache(),
-        });
-
-        client
-            .query({
-                query: gql`
-      query GetLocations {
-        locations {
-          id
-          name
-          description
-          photo
-        }
-      }
-    `,
-            })
-            .then((result) => console.log(result));
-    }, []);
-
+export const App: React.FC = () => {
     return (
-        <>
-            Hi
-        </>
+        <div className="p-5">
+            <Characters/>
+        </div>
     )
 }
-
-export default App

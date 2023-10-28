@@ -1,0 +1,13 @@
+@use "../../assets/styles/_variables.scss" as *;
+
+.alive {
+  background-color: $color-success;
+}
+
+.dead {
+  background-color: $color-error;
+}
+
+.unknown {
+  background-color: $color-warning;
+}
