@@ -1,18 +1,23 @@
 import {gql} from "@apollo/client";
 
-const getAllCharacters = gql`{
-    characters {
-        results {
-            id
-            name
-            image
-            status
-            species
-            location {
+const GET_ALL_CHARACTERS = gql`
+    query ($page: Int!) {
+        characters (page: $page) {
+            info {
+                pages
+            }
+            results {
+                id
                 name
+                image
+                status
+                species
+                location {
+                    name
+                }
             }
         }
     }
-}`
+`;
 
-export {getAllCharacters}
+export {GET_ALL_CHARACTERS}

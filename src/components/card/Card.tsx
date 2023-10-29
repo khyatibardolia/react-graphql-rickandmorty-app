@@ -1,4 +1,4 @@
-import React, {ReactNode} from "react";
+import {FC, ReactNode} from "react";
 
 type Props = {
     header?: ReactNode,
@@ -6,7 +6,7 @@ type Props = {
     footer?: ReactNode,
 }
 
-export const Card: React.FC = ({header, body, footer}: Props) => {
+export const Card: FC = ({header, body, footer}: Props) => {
     return (
         <div className="card">
             {header && <div className="card-header">

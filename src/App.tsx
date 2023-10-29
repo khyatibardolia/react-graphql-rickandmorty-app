@@ -1,5 +1,5 @@
 import React from "react";
-import {Characters} from "./pages/Home/Characters";
+import {Characters} from "./pages/characters/Characters";
 
 export const App: React.FC = () => {
     return (
