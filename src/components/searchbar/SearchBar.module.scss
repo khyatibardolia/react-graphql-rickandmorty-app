@@ -1,0 +1,36 @@
+@use "../../assets/styles/_variables.scss" as *;
+@use "../../assets/styles/_mixins.scss" as *;
+
+.search-bar {
+  position: relative;
+  width: 40%;
+
+  @include mobile {
+    width: 100%;
+  }
+
+  @include desktopExtraLarge {
+    width: 60%;
+  }
+
+  @include tablet {
+    width: 100%;
+  }
+
+  .input-textbox {
+    width: 100%;
+    height: 50px;
+    border: 2px solid $color-blue;
+
+    &:focus {
+      border: 2px solid $color-blue;
+      outline: none;
+    }
+  }
+  button {
+    position: absolute;
+    right: 0;
+    border: none;
+    background-color: transparent;
+  }
+}

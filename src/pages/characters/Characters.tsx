@@ -1,14 +1,30 @@
-import {FC, useState} from "react";
+import {FC, useEffect, useState} from "react";
 import {Card} from "../../components/card/Card";
 import {Pagination} from "../../components/pagination/Pagination";
-import {useQuery} from "@apollo/client";
+import {useLazyQuery} from "@apollo/client";
 import {GET_ALL_CHARACTERS} from "../../graphql/queries/queries";
 import styles from './Characters.module.scss';
+import {SearchBar} from "../../components/searchbar/SearchBar";
 
 export const Characters: FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const { loading, data, error } = useQuery(GET_ALL_CHARACTERS, { variables: { page: currentPage} });
+    const [searchText, setSearchText] = useState("");
+    const [getAllCharactersLazyQuery, {loading, data, error}] = useLazyQuery(GET_ALL_CHARACTERS);
 
+    useEffect(() => {
+        let delayDebounceFn;
+        if (searchText.trim()) {
+            delayDebounceFn = setTimeout(() => {
+                getAllCharactersLazyQuery({ variables: { page: currentPage, query: searchText } });
+            }, 1000);
+        } else {
+            // Handle initial data fetch when the component is mounted
+            getAllCharactersLazyQuery({ variables: { page: currentPage } });
+        }
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [searchText, currentPage, getAllCharactersLazyQuery]);
+    
     if (loading) return <div className="text-center">Loading</div>;
     if (error) return <div className="text-center text-danger">Error: {error.message}</div>;
 
@@ -16,12 +32,15 @@ export const Characters: FC = () => {
         setCurrentPage(page);
     };
 
+    const handleInputChange = (event) => {
+        setSearchText(event.target.value.toLowerCase());
+    }
+
     return <>
-        <header className="mb-5">
-            <h1 className="text-center">Rick & Morty Wiki</h1>
-        </header>
+        <SearchBar className="d-flex justify-content-center pb-5" placeHolder={"Search a character"} value={searchText}
+                   onInputChange={(e) => handleInputChange(e)} clearText={() => setSearchText("")}/>
         <div className="row row-cols-1 row-cols-xl-4 row-cols-md-3 row-cols-sm-2">
-            {data?.characters?.results && data?.characters?.results.map((result) => {
+            {data?.characters?.results && data?.characters?.results?.length ? data?.characters?.results.map((result) => {
                 return <Card
                     className="col"
                     key={result.id}
@@ -42,9 +61,10 @@ export const Characters: FC = () => {
                         </div>
                     }
                 />
-            })}
+            }) : <h5 className="text-center w-100">No records found!!!</h5>}
         </div>
-        <Pagination currentPage={currentPage} totalPages={data?.characters?.info?.pages} onPageChange={handlePageChange} />
+        {data?.characters?.info?.pages > 0 && <Pagination currentPage={currentPage} totalPages={data?.characters?.info?.pages}
+                    onPageChange={handlePageChange}/>}
         {/*<style jsx>
             {`
           .test {
