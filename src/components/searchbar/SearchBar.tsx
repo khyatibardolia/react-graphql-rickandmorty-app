@@ -1,15 +1,15 @@
-import {FC} from "react";
+import {ChangeEvent, FC} from "react";
 import styles from "./SearchBar.module.scss";
 
 type Props = {
     value: string,
     placeHolder: string,
     className: string,
-    onInputChange: () => void,
+    onInputChange: (e: ChangeEvent<HTMLInputElement>) => void,
     clearText: () => void,
 }
 
-export const SearchBar: FC = ({value, placeHolder, className, onInputChange, clearText}: Props) => {
+export const SearchBar: FC<Props> = ({value, placeHolder, className, onInputChange, clearText}) => {
     return <div className={className}>
         <div className={styles['search-bar']}>
             <input type="text" aria-label="search"

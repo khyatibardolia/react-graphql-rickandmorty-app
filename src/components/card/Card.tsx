@@ -6,7 +6,7 @@ type Props = {
     footer?: ReactNode,
 }
 
-export const Card: FC = ({header, body, footer}: Props) => {
+export const Card: FC<Props> = ({header, body, footer}) => {
     return (
         <div className="card">
             {header && <div className="card-header">
